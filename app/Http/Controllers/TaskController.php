@@ -32,14 +32,10 @@ class TaskController extends Controller
         ]);
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id)
     {
-        $task = Task::find($id);
-        if (! $task) {
-            return response()->json([
-                'message' => 'Task not found',
-            ], 404);
-        }
+        $task = Task::findOrFail($id);
+
         $task->update([
             'title'       => $request->title ?? $task->title,
             'description' => $request->description ?? $task->description,
@@ -52,14 +48,10 @@ class TaskController extends Controller
         ]);
     }
 
-    public function destroy($id)
+    public function destroy(int $id)
     {
-        $task = Task::find($id);
-        if (! $task) {
-            return response()->json([
-                'message' => 'Task not found',
-            ], 404);
-        }
+        $task = Task::findOrFail($id);
+
         $task->delete();
         return response()->json([
             'message' => 'Task deleted successfully',
