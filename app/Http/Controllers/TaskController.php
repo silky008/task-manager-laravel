@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreTaskRequest;
 use App\Models\Task;
 use Illuminate\Http\Request;
 
@@ -13,19 +14,10 @@ class TaskController extends Controller
         return response()->json($tasks);
     }
 
-    public function store(Request $request)
+    public function store(StoreTaskRequest $request)
     {
 
-        $request->validate([
-            'title'       => 'required|min:3',
-            'description' => 'nullable|max:255',
-        ]);
-
-        $task = Task::create([
-            'title'       => $request->title,
-            'description' => $request->description,
-            'is_done'     => false,
-        ]);
+        $task = Task::create($request->validated());
         return response()->json([
             'message' => 'Task created successfully',
             'task'    => $task,
@@ -45,7 +37,7 @@ class TaskController extends Controller
         return response()->json([
             'message' => 'Task updated successfully',
             'task'    => $task,
-        ]);
+        ], 201);
     }
 
     public function destroy(int $id)
