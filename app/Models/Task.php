@@ -15,6 +15,9 @@ class Task extends Model
         'is_done',
         'user_id',
     ];
+    protected $casts = [
+        'is_done' => 'boolean',
+    ];
 
     public function user(): BelongsTo
     {
